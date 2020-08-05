@@ -1,38 +1,28 @@
 <?php
 
 namespace Lws;
-
+use Lws\Tools\Curl;
+use Lws\Tools\Json;
+use Lws\Api;
 class WxHelper
 {
-
-    public static function test()
+    //获取access_token
+    public static function getAccessToken($config)
     {
-        return "This is Wxhelper test";
+        $res =  Curl::getCurl(Api::build($config));
+        return Json::toArr($res);
     }
 
-    /**
-     * @param string $name
-     * @param array  $config
-     *
-     * @return \EasyWeChat\Kernel\ServiceContainer
-     */
-    public static function route($name, array $config)
-    {
-        $application = "\\Lws\\{$name}\\Helper";
-        return new $application($config);
+    //发送模板消息
+    public static function pushTemp($config, $openid, $template_id, $tempData, $url = '', $miniprogram = []){
+        $data = [
+            'touser' => $openid,
+            'template_id' => $template_id,
+            'data' => $tempData
+        ];
+        if(!empty($url)) $data['url'] = $url;
+        if(!empty($miniprogram)) $data['miniprogram'] = $miniprogram;
+        $res = Curl::postCurl(Api::build($config), json_encode($data, JSON_UNESCAPED_UNICODE));
+        return Json::toArr($res);
     }
-
-    /**
-     * Dynamically pass methods to the application.
-     *
-     * @param string $name
-     * @param array  $arguments
-     *
-     * @return mixed
-     */
-    public static function __callStatic($name, $arguments)
-    {
-        return self::route($name, ...$arguments);
-    }
-
 }
