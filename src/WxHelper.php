@@ -13,15 +13,39 @@ class WxHelper
         return Json::toArr($res);
     }
 
+    //发送普通消息
+    public static function pushMsg($config, $data)
+    {
+        $res = Curl::postCurl(Api::build($config), json_encode($data, JSON_UNESCAPED_UNICODE));
+        return Json::toArr($res);
+    }
+
     //发送模板消息
-    public static function pushTemp($config, $openid, $template_id, $tempData, $url = '', $miniprogram = []){
-        $data = [
-            'touser' => $openid,
-            'template_id' => $template_id,
-            'data' => $tempData
-        ];
-        if(!empty($url)) $data['url'] = $url;
-        if(!empty($miniprogram)) $data['miniprogram'] = $miniprogram;
+    public static function pushTemp($config, $data){
+        $res = Curl::postCurl(Api::build($config), json_encode($data, JSON_UNESCAPED_UNICODE));
+        return Json::toArr($res);
+    }
+
+    //获取短网址
+    public static function shortUrl($config,$data){
+        $res = Curl::postCurl(Api::build($config), json_encode($data, JSON_UNESCAPED_UNICODE));
+        return Json::toArr($res);
+    }
+
+    //获取用户列表
+    public static function userList($config){
+        $res =  Curl::getCurl(Api::build($config));
+        return Json::toArr($res);
+    }
+
+    //获取用户信息
+    public static function userInfo($config){
+        $res =  Curl::getCurl(Api::build($config));
+        return Json::toArr($res);
+    }
+
+    //获取多个用户信息 每次最多100条
+    public static function usersInfo($config,$data){
         $res = Curl::postCurl(Api::build($config), json_encode($data, JSON_UNESCAPED_UNICODE));
         return Json::toArr($res);
     }
