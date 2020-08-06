@@ -51,7 +51,7 @@ class WxHelper
         return Json::toArr($res);
     }
 
-    //发送普通红包
+    //发普通红包
     public static function sendRedpack($config,$data){
         $data['wxappid'] = $config['app_id'];
         $data['mch_id'] = $config['mch_id'];
