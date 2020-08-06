@@ -1,4 +1,4 @@
-# wehelper
+# 微信开发助手 wxhelper
 
 ### 安装
 ```
