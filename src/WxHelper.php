@@ -45,7 +45,7 @@ class WxHelper
         return Json::toArr($res);
     }
 
-    //获取多个用户信息 每次最多100条
+    //获取多个用户信息 最多100条
     public static function usersInfo($config,$data){
         $res = Curl::postCurl(Api::build($config), json_encode($data, JSON_UNESCAPED_UNICODE));
         return Json::toArr($res);
