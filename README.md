@@ -2,7 +2,7 @@
 
 ### 安装
 ```
-composer require liweishan/wehelper 1.0
+composer require liweishan/wxhelper 1.0
 ```
 
 ### 示例
