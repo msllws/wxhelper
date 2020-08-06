@@ -4,7 +4,7 @@ namespace Lws;
 class Api
 {
     //构建url
-    public static function build($config){
+    public static function build($config = []){
         $array = debug_backtrace();
         $func = $array[1]['function'];
         if(isset($config['app_id'])) $app_id = $config['app_id'];
@@ -28,6 +28,8 @@ class Api
                 return 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='. $access_token .'&openid='. $openid .'&lang=zh_CN';
             case 'usersInfo': //获取多个用户信息
                 return 'https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token='. $access_token;
+            case 'sendRedpack': //发普通红包
+                return 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack';
             default:
                 return '';
         }

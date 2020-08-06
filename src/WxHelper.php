@@ -57,10 +57,10 @@ class WxHelper
         $data['mch_id'] = $config['mch_id'];
         $data['client_ip'] = $_SERVER['REMOTE_ADDR']; //Ip地址
         $data['nonce_str'] = Com::strRand(); //随机32位字符串
-        $data['sign'] = Com::wxSign($data,$config['api_key']);  //创建签名 apiKey为微信支付api秘钥
-        $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
+        $sign = Com::wxSign($data,$config['api_key']);  //创建签名 apiKey为微信支付api秘钥
+        $data['sign'] = $sign;
         $postXml = Com::arrayToXml($data);  //数组转xml
-        $responseXml = Curl::postSsl($url,$postXml,$config['apiclient_cert'],$config['apiclient_key']);  //提交请求
+        $responseXml = Curl::postSsl(Api::build(),$postXml,$config['apiclient_cert'],$config['apiclient_key']);  //提交请求
         $res = Com::xmlToArr($responseXml); //xml转数组
         return Json::toArr($res);
     }

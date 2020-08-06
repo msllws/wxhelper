@@ -31,7 +31,7 @@ class Com
         if (strlen($sign)>0) {
             $sign = substr($sign,0,strlen($sign)-1); //去掉末尾符号“&”
         }
-        $sign .= 'key=' . $apiKey; //签名后加api秘钥
+        $sign .= '&key=' . $apiKey; //签名后加api秘钥
         $sign = strtoupper(md5($sign)); //签名加密并大写
         return $sign;
     }
