@@ -40,4 +40,31 @@ class Curl
         curl_close($ch);
         return $response;
     }
+
+    //post请求网站，需要证书
+    public static function postSsl($url, $vars, $apiclient_cert, $apiclient_key, $second=30,$aHeader=array())
+    {
+        $ch = curl_init();
+        //超时时间
+        curl_setopt($ch,CURLOPT_TIMEOUT,$second);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+        //这里设置代理，如果有的话
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
+        //cert 与 key 分别属于两个.pem文件,路径写绝对路径
+        curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
+        curl_setopt($ch,CURLOPT_SSLCERT, $apiclient_cert);
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
+        curl_setopt($ch,CURLOPT_SSLKEY, $apiclient_key);
+        if( count($aHeader) >= 1 ){
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $aHeader);
+        }
+        curl_setopt($ch,CURLOPT_POST, 1);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$vars);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
 }

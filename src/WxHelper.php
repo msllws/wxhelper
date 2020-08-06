@@ -3,6 +3,7 @@
 namespace Lws;
 use Lws\Tools\Curl;
 use Lws\Tools\Json;
+use Lws\Tools\Com;
 use Lws\Api;
 class WxHelper
 {
@@ -47,6 +48,20 @@ class WxHelper
     //获取多个用户信息 每次最多100条
     public static function usersInfo($config,$data){
         $res = Curl::postCurl(Api::build($config), json_encode($data, JSON_UNESCAPED_UNICODE));
+        return Json::toArr($res);
+    }
+
+    //发送普通红包
+    public static function sendRedpack($config,$data){
+        $data['wxappid'] = $config['app_id'];
+        $data['mch_id'] = $config['mch_id'];
+        $data['client_ip'] = $_SERVER['REMOTE_ADDR']; //Ip地址
+        $data['nonce_str'] = Com::strRand(); //随机32位字符串
+        $data['sign'] = Com::wxSign($data,$config['api_key']);  //创建签名 apiKey为微信支付api秘钥
+        $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
+        $postXml = Com::arrayToXml($data);  //数组转xml
+        $responseXml = Curl::postSsl($url,$postXml,$config['apiclient_cert'],$config['apiclient_key']);  //提交请求
+        $res = Com::xmlToArr($responseXml); //xml转数组
         return Json::toArr($res);
     }
 }
