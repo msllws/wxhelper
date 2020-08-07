@@ -62,6 +62,6 @@ class WxHelper
         $postXml = Com::arrayToXml($data);  //数组转xml
         $responseXml = Curl::postSsl(Api::build(),$postXml,$config['apiclient_cert'],$config['apiclient_key']);  //提交请求
         $res = Com::xmlToArr($responseXml); //xml转数组
-        return Json::toArr($res);
+        return $res;
     }
 }
